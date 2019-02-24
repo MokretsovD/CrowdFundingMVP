@@ -1,0 +1,22 @@
+<form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" class="form-signin">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="username" class="sr-only">Username</label>
+    <input name='username' type='text' [(ngModel)]='username' pattern="[a-zA-Z0-9]*" required #usernameControl="ngModel"
+        placeholder="Username" class="form-control" />
+    <ng-container *ngIf='usernameControl.invalid && (usernameControl.dirty || usernameControl.touched)'>
+        <div *ngIf="usernameControl.errors.required" class="alert alert-danger">
+            Username is required.
+        </div>
+        <div *ngIf="usernameControl.errors.pattern" class="alert alert-danger">
+            Username can contain only letters and numbers
+        </div>
+    </ng-container>
+    <label for="password" class="sr-only">Password</label>
+    <input type='password' name='password' [(ngModel)]='password' required #passwordControl="ngModel" class="form-control"
+        placeholder="Password" />
+    <div *ngIf="passwordControl.invalid && (passwordControl.dirty || passwordControl.touched) && passwordControl.errors.required" class="alert alert-danger">
+        Password is required.
+    </div>
+    <button type='submit' [disabled]="!f.form.valid" class="my-2 btn btn-lg btn-primary btn-block {{!f.form.valid ? 'disabled' : ''}}">Sign in</button>
+    <button type='reset' class="btn btn-lg btn-secondary btn-block" routerLink="/projects">Cancel</button>
+</form>

@@ -1,0 +1,54 @@
+<ng-container *ngIf='projectDetails'>
+    <div class="row featurette">
+        <div class="col-md-12">
+            <h2 class="featurette-heading">{{projectDetails.name}}</h2>
+            <p class="lead">{{projectDetails.description}}</p>
+        </div>
+    </div>
+
+    <div class="row featurette">
+        <div class="col-md-5">
+            <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500"
+                xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                aria-label="Placeholder: 500x500">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
+            </svg>
+        </div>
+
+        <div class="col-md-7">
+            <h4>€{{projectDetails.funded}}</h4>
+            <p>Funded of €{{projectDetails.goal}} goal</p>
+            <p *ngIf='projectDetails.funded < projectDetails.goal'>€{{projectDetails.goal -
+                projectDetails.funded}} more required</p>
+            <h4>{{projectDetails.backers}}</h4>
+            <p>Backers</p>
+
+            <form *ngIf='projectDetails.canBackup' name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
+                <label for="amount" class="sr-only">Amount</label>
+                <input name='amount' type='number' [(ngModel)]='amount' required customMin="100" customMax="10000"
+                    #amountControl="ngModel" class="form-control" />
+
+                <ng-container *ngIf='amountControl.invalid && (amountControl.dirty || amountControl.touched)'>
+                    <div *ngIf="amountControl.errors.required" class="alert alert-danger">
+                        The value is required.
+                    </div>
+                    <div *ngIf="amountControl.errors.customMin" class="alert alert-danger">
+                        The value can't be lower than 100.
+                    </div>
+                    <div *ngIf="amountControl.errors.customMax" class="alert alert-danger">
+                        The value can't be greater than 10000.
+                    </div>
+                </ng-container>
+
+                <button type='submit' [disabled]="!f.form.valid" class="my-2 btn btn-lg btn-primary btn-block {{!f.form.valid ? 'disabled' : ''}}">Back
+                    this project</button>
+            </form>
+            <ng-container *ngIf='!projectDetails.canBackup'>
+                <h4>
+                    Thank you for your cooperation!
+                </h4>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>
